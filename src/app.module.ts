@@ -4,7 +4,7 @@
  * @Author: Pengbin Zhang
  * @Date: 2020-04-13 00:04:00
  * @LastEditors: Pengbin Zhang
- * @LastEditTime: 2020-04-13 00:54:25
+ * @LastEditTime: 2020-04-13 01:03:13
  */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -27,6 +27,15 @@ import { LoggerService } from './logger.service';
   }, {
     provide: "LoggerService",
     useClass: LoggerService
+  }, {
+    provide:'DEMO_FACTORY',
+    useFactory: logger => {
+
+      logger.log('This message came from a provider factory');
+      
+      return "DEMO FACTORY.";
+    },
+    inject: ['LoggerService']
   }],
 })
 
