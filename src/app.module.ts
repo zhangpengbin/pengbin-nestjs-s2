@@ -4,7 +4,7 @@
  * @Author: Pengbin Zhang
  * @Date: 2020-04-13 00:04:00
  * @LastEditors: Pengbin Zhang
- * @LastEditTime: 2020-04-13 01:03:13
+ * @LastEditTime: 2020-04-13 01:07:04
  */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -20,23 +20,24 @@ import { LoggerService } from './logger.service';
 @Module({
   imports: [],
   controllers: [AppController],
-  providers: [{
-    provide: AppService,
-    useClass: AppService
-    //useValue: mockAppService,
-  }, {
-    provide: "LoggerService",
-    useClass: LoggerService
-  }, {
-    provide:'DEMO_FACTORY',
-    useFactory: logger => {
+  providers: [AppService, LoggerService]
+  // providers: [{
+  //   provide: AppService,
+  //   useClass: AppService
+  //   //useValue: mockAppService,
+  // }, {
+  //   provide: "LoggerService",
+  //   useClass: LoggerService
+  // }, {
+  //   provide:'DEMO_FACTORY',
+  //   useFactory: logger => {
 
-      logger.log('This message came from a provider factory');
-      
-      return "DEMO FACTORY.";
-    },
-    inject: ['LoggerService']
-  }],
+  //     logger.log('This message came from a provider factory');
+
+  //     return "DEMO FACTORY.";
+  //   },
+  //   inject: ['LoggerService']
+  // }],
 })
 
 // providers 标准写法 
