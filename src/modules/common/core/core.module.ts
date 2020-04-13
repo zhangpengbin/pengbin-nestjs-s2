@@ -4,11 +4,12 @@
  * @Author: Pengbin Zhang
  * @Date: 2020-04-13 01:33:56
  * @LastEditors: Pengbin Zhang
- * @LastEditTime: 2020-04-13 10:08:51
+ * @LastEditTime: 2020-04-13 10:16:57
  */
-import { Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import { CommonModule } from '../common.module';
 
+@Global()
 @Module({
     imports:[CommonModule],
     exports:[CommonModule]
