@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA_Compatible" content="ie=edge">
+    <title>{{page}}</title>
+
+    <script src="socket.io.js"></script>
+</head>
+
+<body>
+    <h1>{{title}}</h1>
+
+    <button id="main-button">Button</button>
+
+
+    <script>
+        const socket = io('http://localhost:3001/app');
+
+        socket.on('connect', () => {
+            console.log('Connected');
+        })
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected');
+        })
+
+
+        document.querySelector('#main-button').addEventListener('click', () => {
+            socket.emit('events', '#main-button was clicked.', (data) => {
+                console.log(data);
+            })
+        })
+    </script>
+</body>
+
+</html>
