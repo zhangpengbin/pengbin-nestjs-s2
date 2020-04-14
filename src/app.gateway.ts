@@ -4,7 +4,7 @@
  * @Author: Pengbin Zhang
  * @Date: 2020-04-13 11:54:25
  * @LastEditors: Pengbin Zhang
- * @LastEditTime: 2020-04-14 11:12:22
+ * @LastEditTime: 2020-04-14 11:48:33
  */
 
 import { WebSocketGateway, SubscribeMessage, MessageBody, OnGatewayConnection, OnGatewayDisconnect, ConnectedSocket } from '@nestjs/websockets';
@@ -24,13 +24,23 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     @SubscribeMessage('events')
-    handleEvent(@MessageBody() data: string, @ConnectedSocket() client: Socket) {
+    handleEvent(@MessageBody() data: string) {
 
-        client.emit('message', 'Send a message!');
-
-        client.broadcast.emit('message', `${client.id} : Broadcast.`)
+        // client.emit('message', 'Send a message!');
+        // client.broadcast.emit('message', `${client.id} : Broadcast.`)
 
         console.log(data);
         return 'Server: got it!';
+    }
+
+    @SubscribeMessage('message')
+    handleMessage(
+        @MessageBody() data: string,
+        @ConnectedSocket() client: Socket
+    ) {
+
+        client.broadcast.emit('message', `${client.id}: ${data}`);
+        
+        return data;
     }
 }

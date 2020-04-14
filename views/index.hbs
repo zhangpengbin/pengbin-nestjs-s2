@@ -12,12 +12,27 @@
 
 <body>
     <h1>{{title}}</h1>
+    <input type="text" id="message">
+    <button id="main-button">Submit</button>
 
-    <button id="main-button">Button</button>
+    <div id="message-list">
+
+    </div>
 
 
     <script>
         const socket = io('http://localhost:3001/app');
+
+        const newMessage = (data) => {
+
+            const p = document.createElement('p');
+            const text = document.createTextNode(data);
+            p.appendChild(text);
+            document.querySelector("#message-list").appendChild(p);
+
+            message.value = '';
+
+        }
 
         socket.on('connect', () => {
             console.log('Connected');
@@ -26,6 +41,7 @@
 
         socket.on('message', (data) => {
             console.log(data);
+            newMessage(data);
         });
 
         socket.on('disconnect', () => {
@@ -35,6 +51,15 @@
         document.querySelector('#main-button').addEventListener('click', () => {
             socket.emit('events', '#main-button was clicked.', (data) => {
                 console.log(data);
+            })
+
+
+            const message = document.querySelector('#message');
+
+            socket.emit('message', message.value, (data) => {
+                
+                newMessage(data);
+
             })
         });
     </script>
