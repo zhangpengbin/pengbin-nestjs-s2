@@ -4,16 +4,32 @@
  * @Author: Pengbin Zhang
  * @Date: 2020-04-13 11:54:25
  * @LastEditors: Pengbin Zhang
- * @LastEditTime: 2020-04-13 20:26:01
+ * @LastEditTime: 2020-04-14 11:12:22
  */
 
-import { WebSocketGateway, SubscribeMessage, MessageBody } from '@nestjs/websockets';
+import { WebSocketGateway, SubscribeMessage, MessageBody, OnGatewayConnection, OnGatewayDisconnect, ConnectedSocket } from '@nestjs/websockets';
+import { Socket } from 'socket.io';
 
 @WebSocketGateway(3001, { namespace: 'app' })
-export class AppGateway {
-    
+export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
+    handleConnection(client: any, ...args: any[]) {
+
+        console.log('Client connected!');
+        // throw new Error("Method not implemented.");
+    }
+    handleDisconnect(client: any) {
+
+        console.log('Client disconnected!');
+        // throw new Error("Method not implemented.");
+    }
+
     @SubscribeMessage('events')
-    handleEvent(@MessageBody() data: string) {
+    handleEvent(@MessageBody() data: string, @ConnectedSocket() client: Socket) {
+
+        client.emit('message', 'Send a message!');
+
+        client.broadcast.emit('message', `${client.id} : Broadcast.`)
+
         console.log(data);
         return 'Server: got it!';
     }
